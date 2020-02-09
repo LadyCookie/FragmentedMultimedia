@@ -21,21 +21,31 @@ public class ListOfSongs {
 
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-        Cursor cursor = cr.query(songsUri, new String[]{MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.ALBUM}, criteria, null, sortOrder);
+        Cursor cursor = cr.query(songsUri, new String[]{MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME}, criteria, null, sortOrder);
 
+        //Querying song names and paths
         if (cursor.moveToFirst()) {
             do {
                 if (cursor.getString(0) != null) {
                     paths.add(cursor.getString(0));
                     names.add(cursor.getString(1));
-                    String currentAlbum = cursor.getString(2);
-                    if(albums.indexOf(currentAlbum) == -1){
-                        albums.add(currentAlbum);
-                    }
                 }
             }while (cursor.moveToNext());
         }
         cursor.close();
+
+
+        //Querying albums
+        Cursor albumCursor = cr.query(songsUri, new String[] {"DISTINCT(" + MediaStore.Audio.Media.ALBUM +")"}, criteria, null, sortOrder);
+
+        if (albumCursor.moveToFirst()) {
+            do {
+                if (albumCursor.getString(0) != null) {
+                    albums.add(albumCursor.getString(0));
+                }
+            }while (albumCursor.moveToNext());
+        }
+        albumCursor.close();
     }
 
     public ArrayList<String> getSongsByAlbum(Context cxt, String album, String criteria){
