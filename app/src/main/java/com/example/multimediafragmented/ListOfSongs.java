@@ -28,7 +28,10 @@ public class ListOfSongs {
                 if (cursor.getString(0) != null) {
                     paths.add(cursor.getString(0));
                     names.add(cursor.getString(1));
-                    albums.add(cursor.getString(2));
+                    String currentAlbum = cursor.getString(2);
+                    if(albums.indexOf(currentAlbum) == -1){
+                        albums.add(currentAlbum);
+                    }
                 }
             }while (cursor.moveToNext());
         }
