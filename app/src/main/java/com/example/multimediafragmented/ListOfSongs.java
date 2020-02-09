@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ListOfSongs {
@@ -32,6 +33,23 @@ public class ListOfSongs {
             }while (cursor.moveToNext());
         }
         cursor.close();
+    }
+
+    public ArrayList<String> getSongsByAlbum(Context cxt, String album, String criteria){
+        ArrayList<String> result = new ArrayList<>();
+        String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
+        Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Cursor cursor = cxt.getContentResolver().query(songsUri, new String[] {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME},criteria + " AND " + MediaStore.Audio.Media.ALBUM + " = " + '"' + album + '"',null,sortOrder);
+
+        if(cursor.moveToFirst()){
+            do{
+                if(cursor.getString(0)!=null){
+                    result.add(cursor.getString(0));
+                }
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return result;
     }
 
     public ArrayList<String> getPaths(){ return paths;}
