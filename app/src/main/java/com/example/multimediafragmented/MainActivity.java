@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.multimediafragmented.ui.main.AlbumFragment;
 import com.example.multimediafragmented.ui.main.MainFragment;
@@ -29,19 +30,24 @@ public class MainActivity extends AppCompatActivity {
         //AJOUTER PROTECTION
 
         listOfSongs = new ListOfSongs(this,musicOnly);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.simplerow, listOfSongs.getNames());
+        ArrayAdapter<String> NamesAdapter = new ArrayAdapter<String>(this,R.layout.simplerow, listOfSongs.getNames());
 
         if (savedInstanceState == null) {
 
-            Fragment newFrag = MainFragment.newInstance(adapter);
+            Fragment newFrag = MainFragment.newInstance(NamesAdapter);
             //ListView listView = newFrag.getView().;
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, newFrag)
                     .commitNow();
         }
-/*
-        ListView listView = findViewById(R.id.listMusics);
-        listView.setAdapter(adapter);*/
+
+        Toast.makeText(this, "Albums:", Toast.LENGTH_SHORT).show();
+
+        int i;
+        for(i=0; i<listOfSongs.getAlbums().size(); i++){
+            Toast.makeText(this, listOfSongs.getAlbums().get(i), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 

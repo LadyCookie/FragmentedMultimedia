@@ -19,10 +19,13 @@ import android.widget.Toast;
 import com.example.multimediafragmented.ListOfSongs;
 import com.example.multimediafragmented.R;
 
+import java.util.ArrayList;
+
 public class MainFragment extends Fragment {
 
     private MainViewModel mViewModel;
-    public ArrayAdapter<String> mAdapter;
+    private ArrayAdapter<String> mAdapter;
+    private ListView saveListView;
 
     public static MainFragment newInstance(ArrayAdapter<String> adapter) {
         MainFragment MF = new MainFragment();
@@ -34,7 +37,10 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.main_fragment, container, false);
+        //saveListView = (ListView) rootView.findViewById(R.id.listMusics);
+        //saveListView.setAdapter(mAdapter);
+        return rootView;
     }
 
     @Override
@@ -44,18 +50,11 @@ public class MainFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         // TODO: Use the ViewModel
 
+
         View view = getView();
         if(view !=null){
-            /*
-            if(mAdapter != null){
-                int toto = mAdapter.getCount();
-                String Toto = String.valueOf(toto);
-                Toast.makeText(getContext(),Toto ,Toast.LENGTH_LONG).show();
-            }*/
-            Toast.makeText(getContext(),"coucou" ,Toast.LENGTH_SHORT).show();
             ListView listView = view.findViewById(R.id.listMusics);
             if(listView != null){
-                Toast.makeText(getContext(),"ListView not null" ,Toast.LENGTH_SHORT).show();
                 listView.setAdapter(mAdapter);
             }
         }

@@ -12,6 +12,7 @@ public class ListOfSongs {
 
     private ArrayList<String> paths = new ArrayList<>();
     private ArrayList<String> names = new ArrayList<>();
+    private ArrayList<String> albums = new ArrayList<>();
 
     ListOfSongs(Context cxt, String criteria) {
         ContentResolver cr = cxt.getContentResolver();
@@ -19,13 +20,14 @@ public class ListOfSongs {
 
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
 
-        Cursor cursor = cr.query(songsUri, new String[]{MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME}, criteria, null, sortOrder);
+        Cursor cursor = cr.query(songsUri, new String[]{MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME, MediaStore.Audio.Media.ALBUM}, criteria, null, sortOrder);
 
         if (cursor.moveToFirst()) {
             do {
                 if (cursor.getString(0) != null) {
                     paths.add(cursor.getString(0));
                     names.add(cursor.getString(1));
+                    albums.add(cursor.getString(2));
                 }
             }while (cursor.moveToNext());
         }
@@ -34,4 +36,5 @@ public class ListOfSongs {
 
     public ArrayList<String> getPaths(){ return paths;}
     public ArrayList<String> getNames(){ return names;}
+    public ArrayList<String> getAlbums() { return albums;}
 }
