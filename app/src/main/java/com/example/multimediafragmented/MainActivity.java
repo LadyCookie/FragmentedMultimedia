@@ -44,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     Button playButton;
     SeekBar seekBar;
 
+    private String currentAlbum = "All Albums";
+    private int currentAlbumSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         //On récupère les chansons
         listOfSongs = new ListOfSongs(this,musicOnly);
-
+        currentAlbumSize = listOfSongs.getPaths().size()-1;
         //On affiche les albums
         ArrayAdapter<String> NamesAdapter = new ArrayAdapter<String>(this,R.layout.albumrow, listOfSongs.getAlbums());
 
@@ -191,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void prev(View v){
         if(!sent){
-            sendMessagePlay(listOfSongs.getPaths().size()-1);
+            sendMessagePlay(currentAlbumSize);
         }
         else{
             Message message;
@@ -206,15 +209,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessagePlay(int index){
         Message message;
-        Toast.makeText(this,"Sending message?", Toast.LENGTH_SHORT).show();
         if(!bound){
-            Toast.makeText(this,"NOPE",Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(this,"ET C EST UN OUI", Toast.LENGTH_SHORT).show();
         if(!sent){
             Bundle bundle = new Bundle();
-            bundle.putStringArrayList("paths",listOfSongs.getPaths());
+            final String musicOnly = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
+            ArrayList<String> mPaths =listOfSongs.getSongsPathsByAlbum(this,currentAlbum,musicOnly);
+            currentAlbumSize = mPaths.size()-1;
+            bundle.putStringArrayList("paths",mPaths);
             message = Message.obtain(null,MessengerService.MSG_SEND_PATHS,index,0);
             message.setData(bundle);
             sent = true;
@@ -232,12 +235,14 @@ public class MainActivity extends AppCompatActivity {
     public void changeFragment(View view){
         TextView tv = (TextView) view;
         int index = listOfSongs.getAlbums().indexOf(tv.getText());
+        currentAlbum = listOfSongs.getAlbums().get(index);
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft
                 .addToBackStack(null)
                 .replace(R.id.container, listOfAlbumFragments.get(index) )
                 .commit();
+        Toast.makeText(this,currentAlbum,Toast.LENGTH_SHORT).show();
     }
 
 

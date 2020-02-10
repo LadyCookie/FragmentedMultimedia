@@ -65,6 +65,28 @@ public class ListOfSongs {
         return result;
     }
 
+    public ArrayList<String> getSongsPathsByAlbum(Context cxt, String album, String criteria){
+        if(album.equals("All Albums")){
+            return paths;
+        }else {
+            ArrayList<String> result = new ArrayList<>();
+            String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
+            Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+            Cursor cursor = cxt.getContentResolver().query(songsUri, new String[]{MediaStore.Audio.Media.DATA}, criteria + " AND " + MediaStore.Audio.Media.ALBUM + " = " + '"' + album + '"', null, sortOrder);
+
+            if (cursor.moveToFirst()) {
+                do {
+                    if (cursor.getString(0) != null) {
+                        result.add(cursor.getString(0));
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            return result;
+        }
+    }
+
+
     public ArrayList<String> getPaths(){ return paths;}
     public ArrayList<String> getNames(){ return names;}
     public ArrayList<String> getAlbums() { return albums;}
