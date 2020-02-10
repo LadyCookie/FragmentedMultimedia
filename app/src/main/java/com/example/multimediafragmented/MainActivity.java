@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.multimediafragmented.ui.main.AlbumFragment;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         //AJOUTER PROTECTION
         listOfSongs = new ListOfSongs(this,musicOnly);
-        ArrayAdapter<String> NamesAdapter = new ArrayAdapter<String>(this,R.layout.simplerow, listOfSongs.getAlbums());
+        ArrayAdapter<String> NamesAdapter = new ArrayAdapter<String>(this,R.layout.albumrow, listOfSongs.getAlbums());
 
         if (savedInstanceState == null) {
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     .commitNow();
         }
 
-        //On crée les différents fragments
+        //On crée les différents fragments et crée la liste d'albums
         listOfAlbumFragments = new ArrayList<MainFragment>();
         ArrayList<String> listOfAlbums = listOfSongs.getAlbums();
         for(int i=0; i<listOfAlbums.size();i++){
@@ -55,11 +56,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void changeFragment(View view){
+        TextView tv = (TextView) view;
+        int index = listOfSongs.getAlbums().indexOf(tv.getText());
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft
                 .addToBackStack(null)
-                .replace(R.id.container, listOfAlbumFragments.get(0) )
+                .replace(R.id.container, listOfAlbumFragments.get(index) )
                 .commit();
     }
 }
