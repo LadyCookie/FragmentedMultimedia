@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String currentAlbum = "All Albums";
     private int currentAlbumSize;
+    private ArrayList<String> currentSongs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //On récupère les chansons
         listOfSongs = new ListOfSongs(this,musicOnly);
         currentAlbumSize = listOfSongs.getPaths().size()-1;
+        currentSongs = listOfSongs.getNames();
         //On affiche les albums
         ArrayAdapter<String> NamesAdapter = new ArrayAdapter<String>(this,R.layout.albumrow, listOfSongs.getAlbums());
 
@@ -157,8 +159,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void playThis(View v){
+        sent=false;
         TextView tv = (TextView) v;
-        int index = listOfSongs.getNames().indexOf(tv.getText());
+        final String musicOnly = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
+        currentSongs = listOfSongs.getSongsByAlbum(this,currentAlbum,musicOnly);
+        int index = currentSongs.indexOf(tv.getText());
         sendMessagePlay(index);
     }
 
@@ -216,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = new Bundle();
             final String musicOnly = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
             ArrayList<String> mPaths =listOfSongs.getSongsPathsByAlbum(this,currentAlbum,musicOnly);
+            currentSongs = listOfSongs.getSongsByAlbum(this,currentAlbum,musicOnly);
             currentAlbumSize = mPaths.size()-1;
             bundle.putStringArrayList("paths",mPaths);
             message = Message.obtain(null,MessengerService.MSG_SEND_PATHS,index,0);
@@ -242,7 +248,6 @@ public class MainActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .replace(R.id.container, listOfAlbumFragments.get(index) )
                 .commit();
-        Toast.makeText(this,currentAlbum,Toast.LENGTH_SHORT).show();
     }
 
 

@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ public class MainFragment extends Fragment {
     private ArrayAdapter<String> mAdapter;
     private String mTitle;
 
-    public static MainFragment newInstance(ArrayAdapter<String> adapter,String title) {
+    public static MainFragment newInstance(ArrayAdapter<String> adapter, String title) {
         MainFragment MF = new MainFragment();
         MF.mAdapter = adapter;
         MF.mTitle = title;
@@ -40,8 +41,6 @@ public class MainFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.main_fragment, container, false);
-        //saveListView = (ListView) rootView.findViewById(R.id.listMusics);
-        //saveListView.setAdapter(mAdapter);
         return rootView;
     }
 
