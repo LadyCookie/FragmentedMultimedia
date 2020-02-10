@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }else if(intent.getAction().compareTo("startMusic")==0)
             {
-                ((TextView)findViewById(R.id.textTitle)).setText(listOfSongs.getNames().get(intent.getIntExtra("Index",0)));
+                ((TextView)findViewById(R.id.textTitle)).setText(currentSongs.get(intent.getIntExtra("Index",0)));
                 seekBar.setMax(intent.getIntExtra("MaxDuration",0));
                 seekBar.setProgress(0);
             }else if(intent.getAction().compareTo("updateSeekBar")==0)
