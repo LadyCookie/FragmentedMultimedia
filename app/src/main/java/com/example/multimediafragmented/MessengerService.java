@@ -120,7 +120,7 @@ public class MessengerService extends Service {
                 if (mp.isPlaying()) {
                     Intent intent = new Intent();
                     intent.putExtra("Seek", mp.getCurrentPosition()/1000);
-                    intent.setAction("updateSeekbar");
+                    intent.setAction("updateSeekBar");
                     sendBroadcast(intent);
                 }
                 handler.postDelayed(this, 1000);

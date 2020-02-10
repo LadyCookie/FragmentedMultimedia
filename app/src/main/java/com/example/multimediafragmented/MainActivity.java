@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        //On récupère les musiques
+
         final String musicOnly = MediaStore.Audio.Media.IS_MUSIC + " != 0 ";
 
         //On récupère les chansons
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         filter1 = new IntentFilter();
         filter1.addAction("isPlaying");
         filter2 = new IntentFilter();
-        filter2.addAction("StartMusic");
+        filter2.addAction("startMusic");
         filter3 = new IntentFilter();
         filter3.addAction("updateSeekBar");
 
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView)findViewById(R.id.textTitle)).setText(listOfSongs.getNames().get(intent.getIntExtra("Index",0)));
                 seekBar.setMax(intent.getIntExtra("MaxDuration",0));
                 seekBar.setProgress(0);
-            }else if(intent.getAction().compareTo("updateSeekbar")==0)
+            }else if(intent.getAction().compareTo("updateSeekBar")==0)
             {
                 seekBar.setProgress(intent.getIntExtra("Seek",0));
             }
