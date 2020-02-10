@@ -52,7 +52,7 @@ public class ListOfSongs {
         ArrayList<String> result = new ArrayList<>();
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
         Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor cursor = cxt.getContentResolver().query(songsUri, new String[] {MediaStore.Audio.Media.DATA, MediaStore.Audio.Media.DISPLAY_NAME},criteria + " AND " + MediaStore.Audio.Media.ALBUM + " = " + '"' + album + '"',null,sortOrder);
+        Cursor cursor = cxt.getContentResolver().query(songsUri, new String[] {MediaStore.Audio.Media.DISPLAY_NAME},criteria + " AND " + MediaStore.Audio.Media.ALBUM + " = " + '"' + album + '"',null,sortOrder);
 
         if(cursor.moveToFirst()){
             do{
