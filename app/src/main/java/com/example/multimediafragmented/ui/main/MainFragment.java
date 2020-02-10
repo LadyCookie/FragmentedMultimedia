@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.multimediafragmented.ListOfSongs;
@@ -25,11 +26,12 @@ public class MainFragment extends Fragment {
 
     private MainViewModel mViewModel;
     private ArrayAdapter<String> mAdapter;
-    private ListView saveListView;
+    private String mTitle;
 
-    public static MainFragment newInstance(ArrayAdapter<String> adapter) {
+    public static MainFragment newInstance(ArrayAdapter<String> adapter,String title) {
         MainFragment MF = new MainFragment();
         MF.mAdapter = adapter;
+        MF.mTitle = title;
         return MF;
     }
 
@@ -50,12 +52,18 @@ public class MainFragment extends Fragment {
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         // TODO: Use the ViewModel
 
-
+        //Setting the view
         View view = getView();
         if(view !=null){
+            TextView textView = view.findViewById(R.id.myTitle);
+            textView.setText(mTitle);
+
             ListView listView = view.findViewById(R.id.listMusics);
             if(listView != null){
                 listView.setAdapter(mAdapter);
+            }
+            else{
+                Toast.makeText(getContext(),"Didn't find list view",Toast.LENGTH_SHORT).show();
             }
         }
     }

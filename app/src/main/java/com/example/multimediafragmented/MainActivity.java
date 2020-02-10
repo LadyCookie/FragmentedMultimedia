@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
 
-            Fragment newFrag = MainFragment.newInstance(NamesAdapter);
+            Fragment newFrag = MainFragment.newInstance(NamesAdapter,"All Albums");
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, newFrag)
                     .commitNow();
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         for(int i=0; i<listOfAlbums.size();i++){
             ArrayList<String> songInAlbum = listOfSongs.getSongsByAlbum(this,listOfAlbums.get(i),musicOnly);
             ArrayAdapter<String> albumFragmentAdapter = new ArrayAdapter<String>(this,R.layout.simplerow, songInAlbum);
-            MainFragment currentAlbumFragment = MainFragment.newInstance(albumFragmentAdapter);
+            MainFragment currentAlbumFragment = MainFragment.newInstance(albumFragmentAdapter,listOfAlbums.get(i));
             listOfAlbumFragments.add(currentAlbumFragment);
         }
 
@@ -206,7 +206,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessagePlay(int index){
         Message message;
-        if(!bound) return;
+        Toast.makeText(this,"Sending message?", Toast.LENGTH_SHORT).show();
+        if(!bound){
+            Toast.makeText(this,"NOPE",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Toast.makeText(this,"ET C EST UN OUI", Toast.LENGTH_SHORT).show();
         if(!sent){
             Bundle bundle = new Bundle();
             bundle.putStringArrayList("paths",listOfSongs.getPaths());
@@ -235,6 +240,10 @@ public class MainActivity extends AppCompatActivity {
                 .commit();
     }
 
+
+    public void Debug(View v){
+        Toast.makeText(this,"Debug time",Toast.LENGTH_SHORT).show();
+    }
 
     private BroadcastReceiver mMBroadcastReceiver = new BroadcastReceiver() {
         @Override
